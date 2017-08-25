@@ -1,0 +1,69 @@
+{% include "_base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block page_content %}
+<div class="container">
+    <div class="page-header">
+        <h1>supervisor进程管理</h1>
+    </div>
+
+    {% if supervisor %}
+
+    {% if supervisor.is_login %}
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>名称</th>
+            <th>状态</th>
+            <th>描述</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for item in supervisor.getAllProcessInfo() %}
+        <tr>
+            <td>{{ item.name }}</td>
+            <td>
+                <dev
+                        {% if
+                "RUNNING"==item.statename %}
+                class="text-success"
+                {% elif "STOPPED"==item.statename %}
+                class="text-info"
+                {% endif %}
+                >
+                {{ item.statename }}
+                </dev>
+
+            </td>
+            <td>{{ item.description }}</td>
+            <td>
+                <div>
+                    {% if item.state == 0 %}
+                    <a type="button" class="btn btn-success"
+                       href="{{ url_for('supervisor.process_start') }}?name={{ item.name }}">启动</a>
+                    {% else %}
+                    <a type="button" class="btn btn-danger"
+                       href="{{ url_for('supervisor.process_stop') }}?name={{ item.name }}">停止</a>
+                    {% endif %}
+                    <a type="button" class="btn btn-primary"
+                       href="{{ url_for('supervisor.processLog_clear') }}?name={{ item.name }}">清除日志</a>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+    {% else %}
+    <div class="col-md-4">
+        {{ wtf.quick_form(form) }}
+    </div>
+
+    {% endif %}
+
+    {% endif %}
+</div>
+{% endblock %}
