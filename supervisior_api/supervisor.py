@@ -13,10 +13,9 @@ try:
 except ImportError:
     from configparser import ConfigParser
 
-
-
 # 获取当前路径
 curr_dir = os.path.dirname(os.path.realpath(__file__))
+
 
 class Supervisor():
     host = "127.0.0.1"
@@ -106,12 +105,19 @@ class Supervisor():
         """停止所有进程"""
         return self._server.supervisor.stopAllProcesses()
 
+    def readProcessLog(self, name, offset, length):
+        return self._server.supervisor.readProcessLog(name, offset, length)
+
+    def readProcessStdoutLog(self, name, offset, length):
+        return self._server.supervisor.readProcessStdoutLog(name, offset, length)
+
     def clearProcessLog(self):
         """清除进程的日志"""
         return self._server.supervisor.clearProcessLog()
 
 
 singleton_supervisor = Supervisor()
+
 
 def test():
     print(singleton_supervisor.host, singleton_supervisor.port)
@@ -126,8 +132,7 @@ def test():
     methods = singleton_supervisor.listMethods()
     print(methods)
 
-
-    # ret = supervisor.methodHelp("supervisor.getState")
+    # ret = singleton_supervisor.methodHelp("supervisor.readProcessStdoutLog")
     # print(ret)
 
     # ret = supervisor.stopProcess("IoT_Platform")
@@ -135,6 +140,9 @@ def test():
 
     # ret = supervisor.startProcess("IoT_Platform")
     # print(ret)
+
+    log = singleton_supervisor.readProcessStdoutLog("IoT_redis_clean", 0, 0)
+    print(log)
 
 
 if __name__ == '__main__':

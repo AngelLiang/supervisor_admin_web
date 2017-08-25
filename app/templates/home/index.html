@@ -4,7 +4,38 @@
 {% block page_content %}
 <div class="container">
     <div class="page-header">
-        <h1>主页</h1>
+        <h1>主机信息</h1>
     </div>
+
+    <div>
+        {% for processor in cpuInfo.keys() %}
+        <ul>
+            {{ cpuInfo[processor]['model name'] }}
+        </ul>
+        {% endfor %}
+    </div>
+
+    <div>
+        <ul>
+            最近1分钟负载 : {{ loadStat["lavg_1"] }}
+        </ul>
+        <ul>
+            最近5分钟负载 : {{ loadStat["lavg_5"] }}
+        </ul>
+        <ul>
+            最近15分钟负载 : {{ loadStat["lavg_15"] }}
+        </ul>
+    </div>
+
+    <div>
+        <ul>
+            总内存 : {{ memInfo.get("MemTotal") }}
+        </ul>
+        <ul>
+            可用内存 : {{ memInfo.get("MemFree") }}
+        </ul>
+    </div>
+
 </div>
 {% endblock %}
+

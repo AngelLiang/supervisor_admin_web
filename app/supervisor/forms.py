@@ -7,7 +7,7 @@ from wtforms.validators import DataRequired, IPAddress, NumberRange
 
 
 class SupervisorLoginForm(FlaskForm):
-    host = StringField(u"IP", validators=[DataRequired(), IPAddress])
+    host = StringField(u"主机", validators=[DataRequired(), IPAddress])
     port = IntegerField(u"端口", validators=[DataRequired(), NumberRange(0, 65535)])
     username = StringField(u'用户名', validators=[DataRequired()])
     password = PasswordField(u'密码', validators=[DataRequired()])
