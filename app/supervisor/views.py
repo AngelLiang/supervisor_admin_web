@@ -8,9 +8,11 @@ from supervisior_api.supervisor import singleton_supervisor as supervisor
 
 from .forms import SupervisorLoginForm
 from . import supervisor as sup_bp
+from flask_login import login_required
 
 
 @sup_bp.route("/", methods=["GET", "POST"])
+@login_required
 def index():
     form = SupervisorLoginForm()
     if form.validate_on_submit():
@@ -28,6 +30,7 @@ def index():
 
 
 @sup_bp.route("/process_start")
+@login_required
 def process_start():
     args = request.args
     current_app.logger.debug(args)
@@ -44,6 +47,7 @@ def process_start():
 
 
 @sup_bp.route("/process_stop")
+@login_required
 def process_stop():
     args = request.args
     current_app.logger.debug(args)
@@ -60,6 +64,7 @@ def process_stop():
 
 
 @sup_bp.route("/processLog_clear")
+@login_required
 def processLog_clear():
     args = request.args
     current_app.logger.debug(args)
