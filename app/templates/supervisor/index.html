@@ -1,101 +1,97 @@
 {% include "_base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
+
 {% block page_content %}
-<div class="container">
-    <div class="page-header">
-        <h1>supervisor进程管理</h1>
-    </div>
-    {% if supervisor %}
-    {% if supervisor.is_login %}
-    <div>
-        <h3>主机：{{ supervisor.host }} 端口：{{ supervisor.port }}</h3>
+    <script>
+        function processLog_read(name) {
+            $.get("{{ url_for('supervisor.processLog_read') }}?name=" + name,
+                function (data, status) {
+                    $("#process_log").html(data);
+                });
+        }
+    </script>
 
-        <table class="table">
-            <thead>
-            <tr>
-                <th>状态</th>
-                <th>描述</th>
-                <th>名称</th>
-                <th>操作</th>
-            </tr>
-            </thead>
-            <tbody>
-
-            {% for item in supervisor.getAllProcessInfo() %}
-            <tr>
-                <td>
-                    {% if "RUNNING"==item.statename %}
-                    <dev class="text-success"> {{ item.statename }}</dev>
-                    {% elif "STOPPED"==item.statename %}
-                    <dev class="text-info"> {{ item.statename }}</dev>
-                    {% endif %}
-                </td>
-                <td>{{ item.description }}</td>
-                <td><a href="{{ url_for('supervisor.processLog_read') }}?name={{ item.name }}">
-                    {{ item.name }}</a>
-                </td>
-                <td>
-                    <div>
-                        {% if item.state == 0 %}
-                        <a type="button" class="btn btn-success"
-                           href="{{ url_for('supervisor.process_start') }}?name={{ item.name }}">启动</a>
-                        {% else %}
-                        <a type="button" class="btn btn-danger"
-                           href="{{ url_for('supervisor.process_stop') }}?name={{ item.name }}">停止</a>
-                        {% endif %}
-                        <a type="button" class="btn btn-primary"
-                           href="{{ url_for('supervisor.processLog_clear') }}?name={{ item.name }}">清除日志</a>
-                    </div>
-                </td>
-            </tr>
-            {% endfor %}
-
-            </tbody>
-        </table>
-
-        {% else %} {# supervisor.is_login #}
-        <div class="col-md-4">
-            {{ wtf.quick_form(form) }}
+    <div class="container">
+        <div class="page-header">
+            <h1>supervisor进程管理</h1>
         </div>
-    </div>
-</div>
+        {% if supervisor %}
+            {% if supervisor.is_login %}
+                <div>
 
+                    {# <h3>主机：{{ supervisor.host }} 端口：{{ supervisor.port }}</h3> #}
 
-{% endif %}
-{% endif %} {# supervisor #}
-{#
-<form method="POST">
-    {{ form.host.label }} {{ form.host }}
-    {{ form.port.label }} {{ form.port }}
-    {{ form.username.label }} {{ form.username }}
-    {{ form.password.label }} {{ form.password }}
-    {{ form.submit() }}
-</form>
-#}
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>状态</th>
+                            <th>描述</th>
+                            <th>名称</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
 
-{#
-<form class="form-inline" method="post" action="{{ url_for('supervisor.sup_add') }}">
-    <div class="form-group">
-        <label for="host">主机</label>
-        <input type="text" class="form-control" id="host" placeholder="127.0.0.1">
-    </div>
-    <div class="form-group">
-        <label for="port">端口</label>
-        <input type="text" class="form-control" id="port" placeholder="9001">
-    </div>
-    <div class="form-group">
-        <label for="username">端口</label>
-        <input type="text" class="form-control" id="username" placeholder="user">
-    </div>
-    <div class="form-group">
-        <label for="password">端口</label>
-        <input type="password" class="form-control" id="password" placeholder="123">
-    </div>
-    <button type="submit" class="btn btn-primary">添加</button>
-</form>
-#}
+                        {% for item in supervisor.getAllProcessInfo() %}
+                            <tr>
+                                <td>
+                                    {% if "RUNNING"==item.statename %}
+                                        <dev class="bg-success"> {{ item.statename | lower() }}</dev>
+                                    {% elif "STOPPED"==item.statename %}
+                                        <dev class="bg-info"> {{ item.statename | lower() }}</dev>
+                                    {% else %}
+                                        <dev class="bg-warning"> {{ item.statename | lower() }}</dev>
+                                    {% endif %}
+                                </td>
+                                <td>{{ item.description }}</td>
+                                <td>
+                                    <button onclick="processLog_read('{{ item.name }}')">
+                                        {{ item.name }}
+                                    </button>
+                                </td>
+                                <td>
+                                    <div>
+                                        {% if item.state == 0 %}
+                                            <a type="button" class="btn btn-success"
+                                               href="{{ url_for('supervisor.process_start') }}?name={{ item.name }}">启动</a>
+                                        {% else %}
+                                            <a type="button" class="btn btn-danger"
+                                               href="{{ url_for('supervisor.process_stop') }}?name={{ item.name }}">停止</a>
+                                        {% endif %}
+                                        <a type="button" class="btn btn-primary"
+                                           href="{{ url_for('supervisor.processLog_clear') }}?name={{ item.name }}">清除日志</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
 
-</div>
+                        </tbody>
+                    </table>
+
+                    {% else %} {# supervisor.is_login #}
+                    <div>
+                        <p>
+                            请先配置upervisor
+                        </p>
+
+                        <div class="col-md-4">
+                            {{ wtf.quick_form(form) }}
+                        </div>
+                    </div>
+
+                </div>
+
+            {% endif %} {# supervisor.is_login #}
+
+            <div>
+                日志打印：
+            </div>
+            <div id="process_log">
+            </div>
+        {% endif %} {# supervisor #}
+
+    </div>
+
 
 {% endblock %}

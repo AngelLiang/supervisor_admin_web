@@ -22,3 +22,4 @@ def index():
     current_app.logger.debug(memInfo)
 
     return render_template("home/index.html", cpuInfo=cpuInfo, loadStat=loadStat, memInfo=memInfo)
+

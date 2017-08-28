@@ -111,9 +111,9 @@ class Supervisor():
     def readProcessStdoutLog(self, name, offset, length):
         return self._server.supervisor.readProcessStdoutLog(name, offset, length)
 
-    def clearProcessLog(self):
+    def clearProcessLog(self, name):
         """清除进程的日志"""
-        return self._server.supervisor.clearProcessLog()
+        return self._server.supervisor.clearProcessLog(name)
 
 
 singleton_supervisor = Supervisor()
@@ -132,8 +132,8 @@ def test():
     methods = singleton_supervisor.listMethods()
     print(methods)
 
-    # ret = singleton_supervisor.methodHelp("supervisor.readProcessStdoutLog")
-    # print(ret)
+    ret = singleton_supervisor.methodHelp("supervisor.clearProcessLog")
+    print(ret)
 
     # ret = supervisor.stopProcess("IoT_Platform")
     # print(ret)
@@ -141,8 +141,8 @@ def test():
     # ret = supervisor.startProcess("IoT_Platform")
     # print(ret)
 
-    log = singleton_supervisor.readProcessStdoutLog("IoT_redis_clean", 0, 0)
-    print(log)
+    # log = singleton_supervisor.readProcessStdoutLog("IoT_redis_clean", 0, 0)
+    # print(log)
 
 
 if __name__ == '__main__':

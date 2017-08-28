@@ -22,9 +22,9 @@ def index():
         supervisor.password = form.password.data
         ret = supervisor.login()
         if ret:
-            flash(u"登录成功")
+            flash(u"登录成功！")
         else:
-            flash(u"登录失败", category="error")
+            flash(u"登录失败！", category="error")
 
     return render_template("supervisor/index.html", form=form, supervisor=supervisor)
 
@@ -46,9 +46,9 @@ def process_start():
         ret = supervisor.startProcess(name)
         current_app.logger.debug(ret)
         if True == ret:
-            flash(name + u"启动成功", )
+            flash(name + u"启动成功！", )
         else:
-            flash(name + u"启动失败", "errors")
+            flash(name + u"启动失败！", "errors")
 
     return redirect(url_for("supervisor.index"))
 
@@ -63,9 +63,9 @@ def process_stop():
         ret = supervisor.stopProcess(name)
         current_app.logger.debug(ret)
         if True == ret:
-            flash(name + u"停止成功", )
+            flash(name + u"停止成功！", )
         else:
-            flash(name + u"停止失败", "errors")
+            flash(name + u"停止失败！", "errors")
 
     return redirect(url_for("supervisor.index"))
 
@@ -79,6 +79,8 @@ def processLog_clear():
     if name:
         ret = supervisor.clearProcessLog(name)
         current_app.logger.debug(ret)
+        if ret:
+            flash(u"清除成功！")
     return redirect(url_for("supervisor.index"))
 
 
@@ -88,11 +90,13 @@ def processLog_read():
     args = request.args
     current_app.logger.debug(args)
     name = args.get("name")
+    response = None
     if name:
+        name.strip()
         ret = supervisor.readProcessLog(name, 0, 0)
         current_app.logger.debug(ret)
         if ret:
-            response = "<pre>"+ret+"</pre>"
-    else:
-        response = None
+            response = "<pre>" + ret + "</pre>"
+    if request.is_xhr:
+        pass
     return response
