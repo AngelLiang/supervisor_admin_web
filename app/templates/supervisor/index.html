@@ -8,28 +8,15 @@
     </div>
     {% if supervisor %}
     {% if supervisor.is_login %}
-    <div class="row">
-        <div class="col-md-3 col-md-offset-2">
-            主机：{{ supervisor.host }} 端口：{{ supervisor.port }}
-        </div>
-        <div class="col-md-3 col-md-offset-3">
-            <a class="btn btn-primary col-md-3" data-toggle="collapse" href="#collapse1"
-               aria-expanded="false" aria-controls="collapse1">
-                显示
-            </a>
-        </div>
-    </div>
-</div>
-<div class="collapse col-md-10 col-md-offset-1" id="collapse1">
-    <div class="card card-block">
+    <div>
+        <h3>主机：{{ supervisor.host }} 端口：{{ supervisor.port }}</h3>
+
         <table class="table">
             <thead>
             <tr>
                 <th>状态</th>
                 <th>描述</th>
                 <th>名称</th>
-
-
                 <th>操作</th>
             </tr>
             </thead>
@@ -66,12 +53,12 @@
 
             </tbody>
         </table>
-    </div>
-</div>
 
-{% else %} {# supervisor.is_login #}
-<div class="col-md-4">
-    {{ wtf.quick_form(form) }}
+        {% else %} {# supervisor.is_login #}
+        <div class="col-md-4">
+            {{ wtf.quick_form(form) }}
+        </div>
+    </div>
 </div>
 
 

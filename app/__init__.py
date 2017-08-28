@@ -5,10 +5,12 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
+from flask_httpauth import HTTPBasicAuth
 from config import config
 
 db = SQLAlchemy()
 bootstrap = Bootstrap()
+basicAuth = HTTPBasicAuth()
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'

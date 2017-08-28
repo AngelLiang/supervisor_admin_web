@@ -60,7 +60,7 @@ def process_stop():
     current_app.logger.debug(args)
     name = args.get("name")
     if name:
-        ret = sup_bp.stopProcess(name)
+        ret = supervisor.stopProcess(name)
         current_app.logger.debug(ret)
         if True == ret:
             flash(name + u"停止成功", )
@@ -91,6 +91,8 @@ def processLog_read():
     if name:
         ret = supervisor.readProcessLog(name, 0, 0)
         current_app.logger.debug(ret)
+        if ret:
+            response = "<pre>"+ret+"</pre>"
     else:
-        ret = None
-    return ret
+        response = None
+    return response
