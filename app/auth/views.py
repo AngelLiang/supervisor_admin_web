@@ -20,7 +20,7 @@ def login():
 
         if "admin"== username and singleton_admin.verify_password(password):
                 login_user(singleton_admin)
-                return redirect(url_for("supervisor.index"))
+                return redirect(url_for("home.index"))
         else:
             flash(u"登录失败", category="error")
     return render_template("auth/login.html", form=form)

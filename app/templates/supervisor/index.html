@@ -35,6 +35,7 @@
 
                         {% for item in supervisor.getAllProcessInfo() %}
                             <tr>
+                                {# 状态 #}
                                 <td>
                                     {% if "RUNNING"==item.statename %}
                                         <dev class="bg-success"> {{ item.statename | lower() }}</dev>
@@ -44,11 +45,13 @@
                                         <dev class="bg-warning"> {{ item.statename | lower() }}</dev>
                                     {% endif %}
                                 </td>
+                                {# 描述 #}
                                 <td>{{ item.description }}</td>
+                                {# 名称 #}
                                 <td>
-                                    <button onclick="processLog_read('{{ item.name }}')">
+                                    <a onclick="processLog_read('{{ item.name }}')">
                                         {{ item.name }}
-                                    </button>
+                                    </a>
                                 </td>
                                 <td>
                                     <div>

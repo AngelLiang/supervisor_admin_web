@@ -4,22 +4,29 @@
 
 from  flask import render_template, current_app
 from flask_login import login_required
-
-from tools.cpustatus import CPUinfo, load_stat, meminfo
 from . import home
+from system_lib import *
 
 
 @home.route("/")
-@home.route("index")
+@home.route("/index")
 @login_required
 def index():
-    cpuInfo = CPUinfo()
-    loadStat = load_stat()
-    memInfo = meminfo()
+    _debug = current_app.logger.debug
 
-    current_app.logger.debug(cpuInfo)
-    current_app.logger.debug(loadStat)
-    current_app.logger.debug(memInfo)
+    data = {"basic": {}, "system": {}, "netwotk": {}}
+    data["basic"]["general"] = get_general()
+    data["basic"]["cpu_info"] = get_cpu_info()
+    data["basic"]["disk_info"] = get_disk_info()
+    data["basic"]["net_info"] = get_net_info()
+    _debug(data["basic"]["net_info"])
 
-    return render_template("home/index.html", cpuInfo=cpuInfo, loadStat=loadStat, memInfo=memInfo)
+    data["system"]["loadavg"] = get_loadavg()
+    data["system"]["cpu_stat"] = get_cpu_stat()
+    data["system"]["processes"] = get_intensive_processes()
+    data["system"]["pstree"] = get_pstree()
+    data["system"]["mem_info"] = get_mem_info()
+    data["system"]["io_counters"] = get_io_counters()
+    # _debug(data["system"]["cpu_stat"])
 
+    return render_template("home/index.html", data=data)

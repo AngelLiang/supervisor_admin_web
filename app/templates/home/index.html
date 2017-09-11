@@ -1,41 +1,88 @@
 {% include "_base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
+{% import "home/_macro_table.html" as table %}
 
 {% block page_content %}
-<div class="container">
-    <div class="page-header">
-        <h1>主机信息</h1>
-    </div>
+    <div class="container">
+        <div class="page-header">
+            <h1>服务器运行状态</h1>
+        </div>
 
-    <div>
-        {% for processor in cpuInfo.keys() %}
-        <ul>
-            {{ cpuInfo[processor]['model name'] }}
-        </ul>
-        {% endfor %}
-    </div>
+        {# ====================================================================================== #}
+        {# basic #}
+        <div>
+            {% set general = data.basic.general %}
+            {{ table.table1("主机信息", general) }}
+        </div>
 
-    <div>
-        <ul>
-            最近1分钟负载 : {{ loadStat["lavg_1"] }}
-        </ul>
-        <ul>
-            最近5分钟负载 : {{ loadStat["lavg_5"] }}
-        </ul>
-        <ul>
-            最近15分钟负载 : {{ loadStat["lavg_15"] }}
-        </ul>
-    </div>
 
-    <div>
-        <ul>
-            总内存 : {{ memInfo.get("MemTotal") }}
-        </ul>
-        <ul>
-            可用内存 : {{ memInfo.get("MemFree") }}
-        </ul>
-    </div>
+        <div>
+            {% set cpu_info = data.basic.cpu_info %}
+            {{ table.table1("CPU信息", cpu_info) }}
+        </div>
 
-</div>
+        <div>
+            {% set disk_info = data.basic.disk_info %}
+            {{ table.table2("硬盘信息", disk_info) }}
+        </div>
+
+        {# 网络信息 #}
+        <div>
+            {% set net_info = data.basic.net_info %}
+            {{ table.table3("网络信息", net_info) }}
+        </div>
+
+        {# ====================================================================================== #}
+        {# system #}
+
+        <div>
+            {% set loadavg = data.system.loadavg %}
+            {{ table.table1("CPU负载", loadavg) }}
+        </div>
+
+
+        <div>
+            {% set cpu_intensive = data.system.processes.cpu_intensive %}
+            {{ table.table3("占用CPU最高的前十个进程", cpu_intensive) }}
+        </div>
+
+        <div>
+            {% set mem_info = data.system.mem_info %}
+            {{ table.table1("内存信息（单位为M）", mem_info) }}
+        </div>
+
+        <div>
+            {% set processes = data.system.processes %}
+            {% set mem_intensive = data.system.processes.mem_intensive %}
+            {{ table.table3("占用内存最高的前十个进程", mem_intensive) }}
+        </div>
+
+        <div>
+            {% set io_counters = data.system.io_counters %}
+            {{ table.table1("IO信息", io_counters) }}
+        </div>
+        {#
+        <div>
+            {% set loadavg = data.system.cpu_stat %}
+            <table class="table">
+                <thead>CPU状态</thead>
+                <thead>
+                <tr>
+                    {% for item in loadavg.keys() %}
+                        <th>{{ item }}</th>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    {% for item in loadavg.values() %}
+                        <th>{{ item }}</th>
+                    {% endfor %}
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        #}
+    </div>
 {% endblock %}
 

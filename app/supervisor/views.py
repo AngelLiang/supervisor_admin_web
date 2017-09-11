@@ -90,12 +90,12 @@ def processLog_read():
     args = request.args
     current_app.logger.debug(args)
     name = args.get("name")
-    response = None
+    response = "<pre></per>"
     if name:
         name.strip()
         ret = supervisor.readProcessLog(name, 0, 0)
-        current_app.logger.debug(ret)
         if ret:
+            current_app.logger.debug(ret)
             response = "<pre>" + ret + "</pre>"
     if request.is_xhr:
         pass

@@ -1,0 +1,86 @@
+{#
+第一种处理方式
+数据格式：
+{
+
+}
+
+#}
+{% macro table1(name, data) -%}
+    <h3>{{ name }}</h3>
+    <table class="table">
+        <thead>
+        <tr>
+            {% for item in data.keys() %}
+                <th>{{ item }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            {% for item in data.values() %}
+                <th>{{ item }}</th>
+            {% endfor %}
+        </tr>
+        </tbody>
+    </table>
+{%- endmacro %}
+
+{# 第二种处理方式 #}
+{% macro table2(name, data) -%}
+    <h3>{{ name }}</h3>
+    {% for infos in data %}
+        <table class="table">
+            <thead>
+            <tr>
+                {% for item in infos.keys() %}
+                    <th>{{ item }}</th>
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                {% for item in infos.values() %}
+                    <th>{{ item }}</th>
+                {% endfor %}
+            </tr>
+            </tbody>
+        </table>
+    {% endfor %}
+{%- endmacro %}
+
+{#
+第三种处理方式
+数据格式：
+list(
+    dict1((key1, value1), (key2, value2)),
+    dict2((key1, value3), (key2, value4))
+    )
+数据示例：
+[
+    {[(u'interface', 'lo'), (u'address', '127.0.0.1'), (u'netmask', '255.0.0.0')]},
+    {[(u'interface', 'eth1'), (u'address', '192.168.10.100'), (u'netmask', '255.255.252.0')]},
+    {[(u'interface', 'eth0'), (u'address', '192.168.11.100'), (u'netmask', '255.255.252.0')]}
+]
+#}
+{% macro table3(name, data) -%}
+    <h3>{{ name }}</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            {% for item in data[0].keys() %}
+                <th>{{ item }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in data %}
+            <tr>
+                {% for key in item.keys() %}
+                    <th>{{ item[key] }}</th>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{%- endmacro %}
