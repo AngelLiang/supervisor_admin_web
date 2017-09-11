@@ -29,7 +29,7 @@ def get_connections():
 def get_iface_status():
     iface_files = '/proc/net/dev'
     iface_info = OrderedDict()
-    with open(iface_files, 'r') as ifp:
+    with open(iface_files, b'r') as ifp:
         lines = ifp.readlines()[2:]
         for line in lines:
             items = [item.strip() for item in line.split(' ') if item.strip()]

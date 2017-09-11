@@ -3,12 +3,10 @@
 
 
 from flask import request, render_template, redirect, url_for, current_app, flash
-
-from supervisior_api.supervisor import singleton_supervisor as supervisor
-
-from .forms import SupervisorLoginForm
-from . import supervisor as sup_bp
 from flask_login import login_required
+from . import supervisor as sup_bp
+from supervisior_api.supervisor import singleton_supervisor as supervisor
+from .forms import SupervisorLoginForm
 
 
 @sup_bp.route("/", methods=["GET", "POST"])
@@ -93,7 +91,7 @@ def processLog_read():
     response = "<pre></per>"
     if name:
         name.strip()
-        ret = supervisor.readProcessLog(name, 0, 0)
+        ret = supervisor.readProcessLog(name, -1024, 0)
         if ret:
             current_app.logger.debug(ret)
             response = "<pre>" + ret + "</pre>"

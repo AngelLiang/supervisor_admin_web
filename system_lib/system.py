@@ -21,7 +21,7 @@ def get_loadavg():
     """
     load_file = '/proc/loadavg'
 
-    with open(load_file, 'r') as lfp:
+    with open(load_file, b'r') as lfp:
         line = lfp.readline()
         items = [item.strip() for item in line.split(' ') if item.strip()]
         dic = OrderedDict()
