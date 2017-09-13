@@ -2,6 +2,7 @@
 # coding=utf-8
 # Author: yannanxiu
 
+import time
 from flask import render_template, current_app, request
 from flask_login import login_required
 from . import home
@@ -31,10 +32,10 @@ def index():
 
     return render_template("home/index.html", data=data)
 
-
-@home.after_request
-def home_after_request(response):
-    ip = request.remote_addr
-    url = request.base_url
-    current_app.logger.info("{ip} {url}".format(ip=ip, url=url))
-    return response
+# @home.teardown_app_request
+# def _teardown_app_request(response):
+#     now = time.time()
+#     ip = request.remote_addr
+#     url = request.base_url
+#     current_app.logger.info("{ip} {now} {url}".format(ip=ip, now=now, url=url))
+#     return response
