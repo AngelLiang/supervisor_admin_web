@@ -27,6 +27,10 @@ def get_connections():
 
 
 def get_iface_status():
+    """
+    获取网卡的状态
+    :return: dict
+    """
     iface_files = '/proc/net/dev'
     iface_info = OrderedDict()
     with open(iface_files, b'r') as ifp:

@@ -59,30 +59,22 @@
 
         <div>
             {% set io_counters = data.system.io_counters %}
-            {{ table.table1("IO信息", io_counters) }}
+            {{ table.table1("IO信息（单位为B）", io_counters) }}
         </div>
-        {#
+
+        {# ====================================================================================== #}
+        {# network #}
+
         <div>
-            {% set loadavg = data.system.cpu_stat %}
-            <table class="table">
-                <thead>CPU状态</thead>
-                <thead>
-                <tr>
-                    {% for item in loadavg.keys() %}
-                        <th>{{ item }}</th>
-                    {% endfor %}
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    {% for item in loadavg.values() %}
-                        <th>{{ item }}</th>
-                    {% endfor %}
-                </tr>
-                </tbody>
-            </table>
+            {% set iface_status = data.network.iface_status %}
+            {{ table.table4("网卡状态（单位为B）", iface_status) }}
         </div>
-        #}
+
+{#        <div>#}
+{#            {% set connections = data.network.connections %}#}
+{#            {{ table.table1("连接状态", connections) }}#}
+{#        </div>#}
+
     </div>
 {% endblock %}
 

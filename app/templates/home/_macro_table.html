@@ -84,3 +84,32 @@ list(
         </tbody>
     </table>
 {%- endmacro %}
+
+
+{#
+use for get_iface_status()
+#}
+{% macro table4(name, data) -%}
+    <h3>{{ name }}</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>#</th>
+                {% for value_name in data[data.keys()[0]].keys() %}
+                    <th>{{ value_name }}</th>
+                {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in data.keys() %}
+            <tr>
+                <th>{{ item }}</th>
+                {% for key in data[item].keys() %}
+                    <th>{{ data[item][key] }}</th>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{%- endmacro %}
+

@@ -15,12 +15,12 @@ from system_lib import *
 def index():
     _debug = current_app.logger.debug
 
-    data = {"basic": {}, "system": {}, "netwotk": {}}
+    data = {"basic": {}, "system": {}, "network": {}}
     data["basic"]["general"] = get_general()
     data["basic"]["cpu_info"] = get_cpu_info()
     data["basic"]["disk_info"] = get_disk_info()
     data["basic"]["net_info"] = get_net_info()
-    _debug(data["basic"]["net_info"])
+    # _debug(data["basic"]["net_info"])
 
     data["system"]["loadavg"] = get_loadavg()
     data["system"]["cpu_stat"] = get_cpu_stat()
@@ -29,6 +29,9 @@ def index():
     data["system"]["mem_info"] = get_mem_info()
     data["system"]["io_counters"] = get_io_counters()
     # _debug(data["system"]["cpu_stat"])
+
+    data["network"]["iface_status"] = get_iface_status()
+    data["network"]["connections"] = get_connections()
 
     return render_template("home/index.html", data=data)
 
