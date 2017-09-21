@@ -2,6 +2,6 @@
 # coding=utf-8
 
 from flask import Blueprint
-supervisor = Blueprint('supervisor', __name__)
+supervisor = Blueprint('supervisor_bp', __name__)
 
 from . import views

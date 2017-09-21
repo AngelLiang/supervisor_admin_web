@@ -8,7 +8,7 @@ from .models import User, singleton_admin
 
 from . import auth
 from .forms import LoginForm
-from supervisior_api.supervisor import singleton_supervisor as supervisor
+from supervisior_lib.supervisor import singleton_supervisor as supervisor
 
 
 @auth.route("/login", methods=["GET", "POST"])

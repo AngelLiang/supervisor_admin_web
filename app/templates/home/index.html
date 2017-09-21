@@ -1,9 +1,8 @@
-{% include "_base.html" %}
+{% extends "_base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
-{% import "home/_macro_table.html" as table %}
+{% import "macro/_table.html" as table %}
 
 {% block page_content %}
-    <div class="container">
         <div class="page-header">
             <h1>服务器运行状态</h1>
         </div>
@@ -75,6 +74,5 @@
 {#            {{ table.table1("连接状态", connections) }}#}
 {#        </div>#}
 
-    </div>
 {% endblock %}
 

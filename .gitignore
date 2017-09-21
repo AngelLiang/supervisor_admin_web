@@ -45,9 +45,7 @@ ipch/
 *.sdf
 *.cachefile
 
-
-
-supervisior_api/config.ini
+supervisior_lib/config.ini
 
 
 

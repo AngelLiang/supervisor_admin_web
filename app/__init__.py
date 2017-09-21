@@ -6,6 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 from flask_httpauth import HTTPBasicAuth
+from flask_redis import FlaskRedis
 from config import config
 
 db = SQLAlchemy()
@@ -16,6 +17,8 @@ login_manager = LoginManager()
 login_manager.session_protection = 'strong'
 login_manager.login_view = 'auth.login'
 login_manager.login_message = u"请先登录！"
+
+redis_store = FlaskRedis()
 
 
 def create_app(config_name):
@@ -28,6 +31,7 @@ def create_app(config_name):
 
     bootstrap.init_app(app)
     login_manager.init_app(app)
+    redis_store.init_app(app)
 
     # 注册蓝本
     from app.home import home
@@ -37,8 +41,11 @@ def create_app(config_name):
     from app.auth import auth
     app.register_blueprint(auth, url_prefix="/auth")
 
-    from app.supervisor import supervisor
+    from app.supervisor_bp import supervisor
     app.register_blueprint(supervisor, url_prefix='/supervisor')
+
+    from app.redis_bp import redis
+    app.register_blueprint(redis, url_prefix="/redis")
 
     # 附加路由和自定义的错误页面
     from errors import error_404, error_500

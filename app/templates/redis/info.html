@@ -1,0 +1,16 @@
+{% extends "_base.html" %}
+{% import "macro/_table.html" as table %}
+
+{% block page_content %}
+
+    <div class="page-header">
+        <h1>redis状态</h1>
+    </div>
+
+    {% for key in data.keys() %}
+        {{ table.table1(key, data[key]) }}
+    {% endfor %}
+
+
+{% endblock %}
+

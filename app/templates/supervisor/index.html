@@ -1,100 +1,98 @@
-{% include "_base.html" %}
+{% extends "_base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-
-{% block page_content %}
+{% block head_tail %}
     <script>
         function processLog_read(name) {
-            $.get("{{ url_for('supervisor.processLog_read') }}?name=" + name,
+            $.get("{{ url_for('supervisor_bp.processLog_read') }}?name=" + name,
                 function (data, status) {
                     $("#process_log").html(data);
                 });
         }
+
     </script>
+{% endblock head_tail %}
 
-    <div class="container">
-        <div class="page-header">
-            <h1>supervisor进程管理</h1>
-        </div>
-        {% if supervisor %}
-            {% if supervisor.is_login %}
-                <div>
+{% block page_content %}
 
-                    {# <h3>主机：{{ supervisor.host }} 端口：{{ supervisor.port }}</h3> #}
+    <div class="page-header">
+        <h1>supervisor进程管理</h1>
+    </div>
+    {% if supervisor %}
+        {% if supervisor.is_login %}
+            <div>
 
-                    <table class="table">
-                        <thead>
+                {# <h3>主机：{{ supervisor_bp.host }} 端口：{{ supervisor_bp.port }}</h3> #}
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>状态</th>
+                        <th>描述</th>
+                        <th>名称</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for item in supervisor.getAllProcessInfo() %}
                         <tr>
-                            <th>状态</th>
-                            <th>描述</th>
-                            <th>名称</th>
-                            <th>操作</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        {% for item in supervisor.getAllProcessInfo() %}
-                            <tr>
-                                {# 状态 #}
-                                <td>
-                                    {% if "RUNNING"==item.statename %}
-                                        <dev class="bg-success"> {{ item.statename | lower() }}</dev>
-                                    {% elif "STOPPED"==item.statename %}
-                                        <dev class="bg-info"> {{ item.statename | lower() }}</dev>
+                            {# 状态 #}
+                            <td>
+                                {% if "RUNNING"==item.statename %}
+                                    <dev class="bg-success"> {{ item.statename | lower() }}</dev>
+                                {% elif "STOPPED"==item.statename %}
+                                    <dev class="bg-info"> {{ item.statename | lower() }}</dev>
+                                {% else %}
+                                    <dev class="bg-warning"> {{ item.statename | lower() }}</dev>
+                                {% endif %}
+                            </td>
+                            {# 描述 #}
+                            <td>{{ item.description }}</td>
+                            {# 名称 #}
+                            <td>
+                                <a onclick="processLog_read('{{ item.name }}')">
+                                    {{ item.name }}
+                                </a>
+                            </td>
+                            <td>
+                                <div>
+                                    {% if item.state == 0 %}
+                                        <a type="button" class="btn btn-success"
+                                           href="{{ url_for('supervisor_bp.process_start') }}?name={{ item.name }}">启动</a>
                                     {% else %}
-                                        <dev class="bg-warning"> {{ item.statename | lower() }}</dev>
+                                        <a type="button" class="btn btn-danger"
+                                           href="{{ url_for('supervisor_bp.process_stop') }}?name={{ item.name }}">停止</a>
                                     {% endif %}
-                                </td>
-                                {# 描述 #}
-                                <td>{{ item.description }}</td>
-                                {# 名称 #}
-                                <td>
-                                    <a onclick="processLog_read('{{ item.name }}')">
-                                        {{ item.name }}
-                                    </a>
-                                </td>
-                                <td>
-                                    <div>
-                                        {% if item.state == 0 %}
-                                            <a type="button" class="btn btn-success"
-                                               href="{{ url_for('supervisor.process_start') }}?name={{ item.name }}">启动</a>
-                                        {% else %}
-                                            <a type="button" class="btn btn-danger"
-                                               href="{{ url_for('supervisor.process_stop') }}?name={{ item.name }}">停止</a>
-                                        {% endif %}
-                                        <a type="button" class="btn btn-primary"
-                                           href="{{ url_for('supervisor.processLog_clear') }}?name={{ item.name }}">清除日志</a>
-                                    </div>
-                                </td>
-                            </tr>
-                        {% endfor %}
+                                    <a type="button" class="btn btn-primary"
+                                       href="{{ url_for('supervisor_bp.processLog_clear') }}?name={{ item.name }}">清除日志</a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
 
-                        </tbody>
-                    </table>
+                    </tbody>
+                </table>
 
-                    {% else %} {# supervisor.is_login #}
-                    <div>
-                        <p>
-                            请先配置upervisor
-                        </p>
+                {% else %} {# supervisor_bp.is_login #}
+                <div>
+                    <p>
+                        请先配置upervisor
+                    </p>
 
-                        <div class="col-md-4">
-                            {{ wtf.quick_form(form) }}
-                        </div>
+                    <div class="col-md-4">
+                        {{ wtf.quick_form(form) }}
                     </div>
-
                 </div>
 
-            {% endif %} {# supervisor.is_login #}
-
-            <div>
-                日志打印：
             </div>
-            <div id="process_log">
-            </div>
-        {% endif %} {# supervisor #}
 
-    </div>
+        {% endif %} {# supervisor_bp.is_login #}
 
-
+        <div>
+            日志打印：
+        </div>
+        <div id="process_log">
+        </div>
+    {% endif %} {# supervisor_bp #}
 {% endblock %}

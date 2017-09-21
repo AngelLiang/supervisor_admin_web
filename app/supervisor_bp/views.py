@@ -5,7 +5,7 @@
 from flask import request, render_template, redirect, url_for, current_app, flash
 from flask_login import login_required
 from . import supervisor as sup_bp
-from supervisior_api.supervisor import singleton_supervisor as supervisor
+from supervisior_lib.supervisor import singleton_supervisor as supervisor
 from .forms import SupervisorLoginForm
 
 
@@ -31,7 +31,7 @@ def index():
 @login_required
 def sup_add():
     current_app.logger.debug(request.values)
-    return redirect(url_for("supervisor.index"))
+    return redirect(url_for("supervisor_bp.index"))
 
 
 @sup_bp.route("/process_start")
@@ -48,7 +48,7 @@ def process_start():
         else:
             flash(name + u"启动失败！", "errors")
 
-    return redirect(url_for("supervisor.index"))
+    return redirect(url_for("supervisor_bp.index"))
 
 
 @sup_bp.route("/process_stop")
@@ -65,7 +65,7 @@ def process_stop():
         else:
             flash(name + u"停止失败！", "errors")
 
-    return redirect(url_for("supervisor.index"))
+    return redirect(url_for("supervisor_bp.index"))
 
 
 @sup_bp.route("/processLog_clear")
@@ -79,7 +79,7 @@ def processLog_clear():
         current_app.logger.debug(ret)
         if ret:
             flash(u"清除成功！")
-    return redirect(url_for("supervisor.index"))
+    return redirect(url_for("supervisor_bp.index"))
 
 
 @sup_bp.route("/processLog_read")
