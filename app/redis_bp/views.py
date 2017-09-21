@@ -13,7 +13,7 @@ from redis_lib.redis_lib import RedisMonitor
 @login_required
 def index():
     ret_info = redis_store.info()
-    pprint(ret_info)
+    # pprint(ret_info)
     data = RedisMonitor.info_handle(ret_info)
-    pprint(data)
+    # pprint(data)
     return render_template("redis/info.html", data=data)

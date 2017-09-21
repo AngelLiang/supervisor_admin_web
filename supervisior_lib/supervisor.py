@@ -35,18 +35,18 @@ class Supervisor():
             return
         config = ConfigParser()
         config.readfp(open(self.file))
-        self.host = config.get("supervisor_bp", "host")
-        self.port = config.getint("supervisor_bp", "port")
-        self.username = config.get("supervisor_bp", "username")
-        self.password = config.get("supervisor_bp", "password")
+        self.host = config.get("supervisor", "host")
+        self.port = config.getint("supervisor", "port")
+        self.username = config.get("supervisor", "username")
+        self.password = config.get("supervisor", "password")
 
     def save_config(self):
         config = ConfigParser()
-        config.add_section("supervisor_bp")
-        config.set("supervisor_bp", "host", self.host)
-        config.set("supervisor_bp", "port", self.port)
-        config.set("supervisor_bp", "username", self.username)
-        config.set("supervisor_bp", "password", self.password)
+        config.add_section("supervisor")
+        config.set("supervisor", "host", self.host)
+        config.set("supervisor", "port", self.port)
+        config.set("supervisor", "username", self.username)
+        config.set("supervisor", "password", self.password)
         config.write(open(self.file, "w"))
 
     def login(self):
