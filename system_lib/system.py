@@ -228,13 +228,17 @@ def get_mem_info():
     """
     memory = psutil.virtual_memory()
     dic = OrderedDict()
-    dic["total"] = round(memory.total / M, 2)
-    dic["available"] = round(memory.available / M, 2)
-    dic["active"] = round(memory.active / M, 2)
-    dic["free"] = round(memory.free / M, 2)
-    dic["buffers"] = round(memory.buffers / M, 2)
-    dic["cached"] = round(memory.cached / M, 2)
-    dic["percent"] = round(memory.percent, 2)
+
+    dic["total"] = round(memory.total / M, 2)  # 内存总数
+    dic["used"] = round(memory.used / M, 2)  # 已使用的内存数
+    dic["free"] = round(memory.free / M, 2)  # 空闲内存数
+
+    # dic["available"] = round(memory.available / M, 2)  #
+    # dic["active"] = round(memory.active / M, 2)  #
+    # dic["buffers"] = round(memory.buffers / M, 2)
+    # dic["cached"] = round(memory.cached / M, 2)
+    # dic["percent"] = round(memory.percent, 2)
+
     return dic
 
 

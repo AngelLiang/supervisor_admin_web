@@ -57,12 +57,13 @@
                             </td>
                             <td>
                                 <div>
-                                    {% if item.state == 0 %}
-                                        <a type="button" class="btn btn-success"
-                                           href="{{ url_for('supervisor_bp.process_start') }}?name={{ item.name }}">启动</a>
-                                    {% else %}
+                                    {% if item.state == 20 %}
                                         <a type="button" class="btn btn-danger"
                                            href="{{ url_for('supervisor_bp.process_stop') }}?name={{ item.name }}">停止</a>
+                                    {% else %}
+                                        <a type="button" class="btn btn-success"
+                                           href="{{ url_for('supervisor_bp.process_start') }}?name={{ item.name }}">启动</a>
+
                                     {% endif %}
                                     <a type="button" class="btn btn-primary"
                                        href="{{ url_for('supervisor_bp.processLog_clear') }}?name={{ item.name }}">清除日志</a>

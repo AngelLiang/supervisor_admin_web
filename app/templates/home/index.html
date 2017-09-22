@@ -3,76 +3,87 @@
 {% import "macro/_table.html" as table %}
 
 {% block page_content %}
-        <div class="page-header">
-            <h1>服务器运行状态</h1>
-        </div>
+    <div class="page-header">
+        <h1>服务器运行状态</h1>
+    </div>
 
-        {# ====================================================================================== #}
-        {# basic #}
-        <div>
-            {% set general = data.basic.general %}
-            {{ table.table1("主机信息", general) }}
-        </div>
-
-
-        <div>
-            {% set cpu_info = data.basic.cpu_info %}
-            {{ table.table1("CPU信息", cpu_info) }}
-        </div>
-
-        <div>
-            {% set disk_info = data.basic.disk_info %}
-            {{ table.table2("硬盘信息", disk_info) }}
-        </div>
-
-        {# 网络信息 #}
-        <div>
-            {% set net_info = data.basic.net_info %}
-            {{ table.table3("网络信息", net_info) }}
-        </div>
-
-        {# ====================================================================================== #}
-        {# system #}
-
-        <div>
-            {% set loadavg = data.system.loadavg %}
-            {{ table.table1("CPU负载", loadavg) }}
-        </div>
+    {# ====================================================================================== #}
+    {# basic #}
+    <div>
+        {% set general = data.basic.general %}
+        {{ table.table1("主机信息", general) }}
+    </div>
 
 
+    <div>
+        {% set cpu_info = data.basic.cpu_info %}
+        {{ table.table1("CPU信息", cpu_info) }}
+    </div>
+
+    <div>
+        {% set disk_info = data.basic.disk_info %}
+        {{ table.table2("硬盘信息", disk_info) }}
+    </div>
+
+    {# 网络信息 #}
+    <div>
+        {% set net_info = data.basic.net_info %}
+        {{ table.table3("网络信息", net_info) }}
+    </div>
+
+    {# ====================================================================================== #}
+    {# system #}
+
+    <div>
+        {% set loadavg = data.system.loadavg %}
+        {{ table.table1("CPU负载", loadavg) }}
+    </div>
+
+
+    {% if data.system.processes %}
         <div>
             {% set cpu_intensive = data.system.processes.cpu_intensive %}
             {{ table.table3("占用CPU最高的前十个进程", cpu_intensive) }}
         </div>
+    {% endif %}
 
+    {% if data.system.mem_info %}
         <div>
             {% set mem_info = data.system.mem_info %}
             {{ table.table1("内存信息（单位为M）", mem_info) }}
         </div>
+    {% endif %}
 
+    {% if data.system.processes %}
         <div>
             {% set processes = data.system.processes %}
             {% set mem_intensive = data.system.processes.mem_intensive %}
             {{ table.table3("占用内存最高的前十个进程", mem_intensive) }}
         </div>
-
+    {% endif %}
+    {% if data.system.io_counters %}
         <div>
             {% set io_counters = data.system.io_counters %}
             {{ table.table1("IO信息（单位为B）", io_counters) }}
         </div>
+    {% endif %}
 
-        {# ====================================================================================== #}
-        {# network #}
+    {# ====================================================================================== #}
+    {# network #}
 
-        <div>
-            {% set iface_status = data.network.iface_status %}
-            {{ table.table4("网卡状态（单位为B）", iface_status) }}
-        </div>
+    <div>
+        {% set iface_status = data.network.iface_status %}
+        {{ table.table4("网卡状态（单位为B）", iface_status) }}
+    </div>
 
-{#        <div>#}
-{#            {% set connections = data.network.connections %}#}
-{#            {{ table.table1("连接状态", connections) }}#}
-{#        </div>#}
+    {#        <div>#}
+    {#            {% set connections = data.network.connections %}#}
+    {#            {{ table.table1("连接状态", connections) }}#}
+    {#        </div>#}
+
+    {# ====================================================================================== #}
+    {# 统计信息 #}
+
 
 {% endblock %}
 

@@ -13,6 +13,8 @@ class Config:
     SUPERVISOR_MAIL_SENDER = 'admin@example.com'
     SUPERVISOR_ADMIN = os.environ.get('SUPERVISOR_ADMIN') or "admin"
 
+    SCHEDULER_API_ENABLED = False
+
     @staticmethod
     def init_app(app):
         pass
@@ -20,7 +22,7 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
+    SQLALCHEMY_DATABASE_URI = os.environ.get('ADMIN_WEB_DEV_DATABASE_URL') or \
                               'sqlite:///' + os.path.join(datadir, 'data-dev.sqlite')
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
@@ -28,13 +30,13 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     TESTING = True
     WTF_CSRF_ENABLED = False
-    SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or \
+    SQLALCHEMY_DATABASE_URI = os.environ.get('ADMIN_WEB_TEST_DATABASE_URL') or \
                               'sqlite:///' + os.path.join(datadir, 'data-test.sqlite')
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
+    SQLALCHEMY_DATABASE_URI = os.environ.get('ADMIN_WEB_DATABASE_URL') or \
                               'sqlite:///' + os.path.join(datadir, 'data.sqlite')
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 

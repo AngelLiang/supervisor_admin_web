@@ -52,4 +52,6 @@ def create_app(config_name):
     app.register_error_handler(404, error_404)
     app.register_error_handler(500, error_500)
 
+    # db.create_all()
+
     return app

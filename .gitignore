@@ -46,6 +46,7 @@ ipch/
 *.cachefile
 
 supervisior_lib/config.ini
-
+data/
+!data/README.md
 
 
