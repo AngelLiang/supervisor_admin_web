@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # coding=utf-8
 
+import chartkick
 from flask import Flask
+from flask import Blueprint
 from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
@@ -51,6 +53,11 @@ def create_app(config_name):
     from errors import error_404, error_500
     app.register_error_handler(404, error_404)
     app.register_error_handler(500, error_500)
+
+    # 加入报表有关的配置
+    ck = Blueprint('ck_bp', __name__, static_folder=chartkick.js(), static_url_path='/static')
+    app.register_blueprint(ck, url_prefix='/ck')
+    app.jinja_env.add_extension("chartkick.ext.charts")
 
     # db.create_all()
 

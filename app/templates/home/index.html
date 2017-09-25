@@ -2,6 +2,22 @@
 {% import "bootstrap/wtf.html" as wtf %}
 {% import "macro/_table.html" as table %}
 
+
+{% block head_tail %}
+    {{ super() }}
+
+    {# 报表js #}
+    <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>-->
+{#    <script src="//cdn.bootcss.com/jquery/1.8.3/jquery.min.js"></script>#}
+{#    <script src="http://code.highcharts.com/highcharts.js"></script>#}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js"></script>
+    <!--<script src="static/js/chartkick.js"></script>-->
+    {# <script src="{{ url_for('ck_bp.static', filename='chartkick.js', _external=True) }}"></script> #}
+    <script src="{{ url_for('static', filename='js/chartkick.js', _external=True) }}"></script>
+    {# 报表js end #}
+
+{% endblock %}
+
 {% block page_content %}
     <div class="page-header">
         <h1>服务器运行状态</h1>
@@ -39,6 +55,10 @@
         {{ table.table1("CPU负载", loadavg) }}
     </div>
 
+    <div>
+        {% line_chart stats_cpu %}
+    </div>
+
 
     {% if data.system.processes %}
         <div>
@@ -53,6 +73,10 @@
             {{ table.table1("内存信息（单位为M）", mem_info) }}
         </div>
     {% endif %}
+
+    <div>
+        {% line_chart stats_mem %}
+    </div>
 
     {% if data.system.processes %}
         <div>
@@ -83,6 +107,8 @@
 
     {# ====================================================================================== #}
     {# 统计信息 #}
+
+
 
 
 {% endblock %}
